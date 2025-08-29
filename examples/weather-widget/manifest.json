@@ -1,0 +1,102 @@
+{
+    "manifest_version": 1,
+    "name": "Weather Widget",
+    "version": "1.0.0",
+    "description": "Display current weather conditions and forecasts on your dashboard",
+    "type": "dashboard-widget",
+    "author": {
+        "name": "Qirvo Team",
+        "email": "team@qirvo.ai",
+        "website": "https://qirvo.ai"
+    },
+    "category": "productivity",
+    "permissions": [
+        "network",
+        "storage",
+        "notifications"
+    ],
+    "external_services": [
+        {
+            "name": "OpenWeatherMap",
+            "base_url": "https://api.openweathermap.org/data/2.5",
+            "api_key_required": true,
+            "description": "Weather data API"
+        }
+    ],
+    "dashboard_widget": {
+        "name": "Weather Widget",
+        "description": "Current weather and forecast",
+        "component": "WeatherWidget",
+        "defaultSize": {
+            "width": 300,
+            "height": 200
+        },
+        "configSchema": {
+            "type": "object",
+            "properties": {
+                "apiKey": {
+                    "type": "string",
+                    "title": "OpenWeatherMap API Key",
+                    "description": "Your API key from OpenWeatherMap",
+                    "minLength": 32
+                },
+                "location": {
+                    "type": "string",
+                    "title": "Default Location",
+                    "description": "City name or coordinates (lat,lon)",
+                    "default": "New York"
+                },
+                "units": {
+                    "type": "string",
+                    "title": "Units",
+                    "description": "Temperature units",
+                    "enum": [
+                        "metric",
+                        "imperial",
+                        "kelvin"
+                    ],
+                    "default": "metric"
+                },
+                "updateInterval": {
+                    "type": "number",
+                    "title": "Update Interval",
+                    "description": "How often to refresh weather data (minutes)",
+                    "minimum": 5,
+                    "maximum": 60,
+                    "default": 15
+                }
+            },
+            "required": [
+                "apiKey"
+            ]
+        }
+    },
+    "pages": [
+        {
+            "name": "settings",
+            "path": "/plugins/weather/settings",
+            "component": "WeatherSettings",
+            "title": "Weather Settings",
+            "icon": "settings"
+        }
+    ],
+    "menu_items": [
+        {
+            "label": "Weather",
+            "path": "/plugins/weather",
+            "icon": "cloud",
+            "order": 100
+        }
+    ],
+    "commands": [
+        {
+            "name": "weather",
+            "description": "Get current weather",
+            "usage": "weather [location]"
+        }
+    ],
+    "repository": "https://github.com/ultracoolbru/qirvo-plugin-sdk",
+    "homepage": "https://github.com/ultracoolbru/qirvo-plugin-sdk",
+    "bugs": "https://github.com/ultracoolbru/qirvo-plugin-sdk/issues",
+    "license": "MIT"
+}

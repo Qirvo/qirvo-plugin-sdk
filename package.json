@@ -1,0 +1,65 @@
+{
+    "name": "@qirvo/plugin-sdk",
+    "version": "2.0.6",
+    "description": "Comprehensive Qirvo Plugin SDK with marketplace integration, runtime management, and development utilities",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "clean": "rimraf dist",
+        "dev": "tsc --watch",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage",
+        "lint": "eslint src/**/*.ts",
+        "lint:fix": "eslint src/**/*.ts --fix",
+        "prepublishOnly": "npm run build",
+        "docs": "typedoc",
+        "examples": "npm run build-examples"
+    },
+    "keywords": [
+        "qirvo",
+        "plugin",
+        "sdk",
+        "development",
+        "marketplace",
+        "runtime",
+        "typescript",
+        "cli",
+        "dashboard"
+    ],
+    "author": "Qirvo Team",
+    "license": "MIT",
+    "devDependencies": {
+        "@eslint/js": "^9.34.0",
+        "@types/jest": "^29.5.0",
+        "@types/node": "^20.19.11",
+        "@typescript-eslint/eslint-plugin": "^8.41.0",
+        "@typescript-eslint/parser": "^6.0.0",
+        "eslint": "^9.34.0",
+        "eslint-plugin-react": "^7.37.5",
+        "globals": "^16.3.0",
+        "jest": "^29.5.0",
+        "jiti": "^2.5.1",
+        "rimraf": "^5.0.0",
+        "ts-jest": "^29.1.0",
+        "typedoc": "^0.25.0",
+        "typescript": "^5.9.2",
+        "typescript-eslint": "^8.41.0"
+    },
+    "files": [
+        "dist/**/*",
+        "examples/**/*",
+        "templates/**/*",
+        "docs/**/*",
+        "README.md",
+        "src/**/*"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ultracoolbru/qirvo-plugin-sdk.git"
+    },
+    "engines": {
+        "node": ">=16.0.0"
+    }
+}
