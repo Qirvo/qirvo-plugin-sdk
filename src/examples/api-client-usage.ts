@@ -1,7 +1,7 @@
 // Qirvo Plugin SDK - API Client Usage Example
 // This example demonstrates how to use the HTTP client and endpoints for plugin development
 
-import { apiClient, endpoints } from '../src/endpoints';
+import { apiClient, endpoints } from '../endpoints';
 
 async function pluginManagementExample() {
     console.log('=== Plugin Management Example ===');
