@@ -1,7 +1,7 @@
 # Qirvo Plugin SDK v2.0
 
 [![npm version](https://badge.fury.io/js/%40qirvo%2Fplugin-sdk.svg)](https://badge.fury.io/js/%40qirvo%2Fplugin-sdk)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: GNU GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://opensource.org/licenses/GPL-3.0)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 
 The comprehensive SDK for developing plugins for the Qirvo platform with **full marketplace integration**. Build powerful extensions that integrate seamlessly with Qirvo's dashboard, CLI, automation system, and plugin marketplace.
@@ -428,15 +428,14 @@ MIT License - see [LICENSE](https://github.com/ultracoolbru/qirvo-plugin-sdk/blo
 ## 🆘 Support
 
 - 📖 [Documentation](https://docs.qirvo.ai/plugins)
-- 💬 [Discord Community](https://discord.gg/qirvo)
-- 🐛 [Issue Tracker](https://github.com/ultracoolbru/qirvo-plugin-sdk/issues)
+- 🐛 [Issue Tracker](https://github.com/Qirvo/qirvo-weather-plugin/issues)
 - 📧 [Email Support](mailto:support@qirvo.ai)
 
 ## 🎉 Plugin Examples
 
 Check out these example plugins to get started:
 
-- [Weather Widget](https://github.com/ultracoolbru/qirvo-plugin-sdk/tree/main/examples/weather-widget)
+- [Weather Widget](https://github.com/Qirvo/qirvo-weather-plugin/tree/main/examples/weather-widget)
 - [Task Automation](https://github.com/ultracoolbru/qirvo-plugin-sdk/tree/main/examples/task-automation)
 - [GitHub Integration](https://github.com/ultracoolbru/qirvo-plugin-sdk/tree/main/examples/github-integration)
 - [Calendar Sync](https://github.com/ultracoolbru/qirvo-plugin-sdk/tree/main/examples/calendar-sync)

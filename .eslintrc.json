@@ -1,0 +1,22 @@
+{
+    "extends": [
+        "next/core-web-vitals",
+        "next/typescript"
+    ],
+    "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "ignoreRestSiblings": true
+            }
+        ],
+        "react/no-unescaped-entities": "off",
+        "prefer-const": "warn",
+        "react-hooks/exhaustive-deps": "warn",
+        "@next/next/no-assign-module-variable": "warn",
+        "@typescript-eslint/no-unsafe-function-type": "warn"
+    }
+}
