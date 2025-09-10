@@ -419,11 +419,11 @@ createPlugin(pluginClass: new () => BasePlugin): BasePlugin;
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](https://github.com/ultracoolbru/qirvo-plugin-sdk/blob/main/CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ## 📄 License
 
-MIT License - see [LICENSE](https://github.com/ultracoolbru/qirvo-plugin-sdk/blob/main/LICENSE) file for details.
+GNU License - see [LICENSE](https://github.com/Qirvo/qirvo-weather-plugin/blob/main/LICENSE) file for details.
 
 ## 🆘 Support
 
@@ -436,9 +436,8 @@ MIT License - see [LICENSE](https://github.com/ultracoolbru/qirvo-plugin-sdk/blo
 Check out these example plugins to get started:
 
 - [Weather Widget](https://github.com/Qirvo/qirvo-weather-plugin/tree/main/examples/weather-widget)
-- [Task Automation](https://github.com/ultracoolbru/qirvo-plugin-sdk/tree/main/examples/task-automation)
-- [GitHub Integration](https://github.com/ultracoolbru/qirvo-plugin-sdk/tree/main/examples/github-integration)
-- [Calendar Sync](https://github.com/ultracoolbru/qirvo-plugin-sdk/tree/main/examples/calendar-sync)
+- [Task Automation](https://github.com/Qirvo/qirvo-weather-plugin/tree/main/examples/task-automation)
+- [Calendar Sync](https://github.com/Qirvo/qirvo-weather-plugin/tree/main/examples/calendar-sync)
 
 ---
 

@@ -9,7 +9,7 @@ Thank you for your interest in contributing to the Qirvo Plugin SDK! This docume
 1. **Fork and Clone** the repository:
 
    ```bash
-   git clone https://github.com/YOUR_USERNAME/qirvo-plugin-sdk.git
+   git clone https://github.com/Qirvo/qirvo-plugin-sdk.git
    cd qirvo-plugin-sdk
    ```
 
@@ -36,17 +36,17 @@ Thank you for your interest in contributing to the Qirvo Plugin SDK! This docume
 
 ```bash
 qirvo-plugin-sdk/
-├── src/                    # Source code
-│   ├── index.ts           # Main exports
-│   ├── types.ts           # TypeScript type definitions
-│   ├── endpoints.ts       # API endpoints and HTTP client
-│   └── utils/             # Utility functions
-├── examples/              # Example plugins
-├── docs/                  # Documentation
-├── dist/                  # Built distribution files
+├── src/                        # Source code
+|── ├── examples/               # Example plugins
+├── ├── api-client-usage.ts     # Qirvo Plugin SDK - API Client Usage Example
+│   ├── types.ts                # TypeScript type definitions
+│   ├── index.ts                # Main exports
+│   ├── endpoints.ts            # API endpoints and HTTP client
+│   └── utils/                  # Utility functions
+├── dist/                       # Built distribution files
 ├── package.json
 ├── tsconfig.json
-├── .eslintrc.json         # ESLint configuration
+├── .eslintrc.json              # ESLint configuration
 └── README.md
 ```
 
@@ -54,7 +54,7 @@ qirvo-plugin-sdk/
 
 ### 1. Choose an Issue
 
-- Check the [Issues](https://github.com/ultracoolbru/qirvo-plugin-sdk/issues) page
+- Check the [Issues](https://github.com/Qirvo/qirvo-plugin-sdk/issues) page
 - Look for issues labeled `good first issue` or `help wanted`
 - Comment on the issue to indicate you're working on it
 
@@ -97,7 +97,7 @@ git push origin feature/your-feature-name
 # Create a Pull Request on GitHub
 ```
 
-## 📝 Code Style Guidelines
+## Code Style Guidelines
 
 ### TypeScript
 
@@ -106,6 +106,10 @@ git push origin feature/your-feature-name
 - Use `readonly` for immutable properties
 - Avoid `any` type - use specific types instead
 - Use proper JSDoc comments for public APIs
+- Use union types instead of enums for better tree-shaking
+- Use `unknown` instead of `any` when type is truly unknown
+- Leverage TypeScript's strict mode features
+- Use `satisfies` operator for better type inference when needed
 
 ### Naming Conventions
 
@@ -114,6 +118,9 @@ git push origin feature/your-feature-name
 - **Interfaces**: Use PascalCase with 'I' prefix (e.g., `IPluginConfig`)
 - **Methods/Variables**: Use camelCase (e.g., `getPluginConfig`)
 - **Constants**: Use UPPER_SNAKE_CASE (e.g., `DEFAULT_TIMEOUT`)
+- **Type Aliases**: Use PascalCase (e.g., `PluginOptions`)
+- **Generic Type Parameters**: Use single uppercase letters (e.g., `T`, `U`, `K`, `V`)
+- **Private Members**: Prefix with underscore (e.g., `_privateField`)
 
 ### Code Structure
 
@@ -143,6 +150,93 @@ class pluginManager {
 }
 ```
 
+### Function Design
+
+```typescript
+// Good: Clear function signatures with proper typing
+public async validatePlugin(
+  manifest: PluginManifest,
+  options: ValidationOptions = {}
+): Promise<ValidationResult> {
+  // Implementation
+}
+
+// Good: Use destructuring for options objects
+public async createPlugin({
+  name,
+  version,
+  dependencies = [],
+  config = {}
+}: CreatePluginOptions): Promise<Plugin> {
+  // Implementation
+}
+
+// Avoid: Too many parameters
+public createPlugin(name: string, version: string, deps: string[], config: any) {
+  // Implementation
+}
+```
+
+### Error Handling
+
+```typescript
+// Good: Custom error classes with proper typing
+export class PluginLoadError extends Error {
+  constructor(
+    message: string,
+    public readonly pluginId: string,
+    public readonly cause?: Error
+  ) {
+    super(message);
+    this.name = 'PluginLoadError';
+  }
+}
+
+// Good: Proper error handling with async/await
+public async loadPlugin(id: string): Promise<Plugin> {
+  try {
+    const manifest = await this.fetchManifest(id);
+    const validated = await this.validateManifest(manifest);
+    return await this.instantiatePlugin(validated);
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      throw new PluginLoadError(`Invalid plugin manifest: ${error.message}`, id, error);
+    }
+    throw new PluginLoadError(`Failed to load plugin: ${error.message}`, id, error);
+  }
+}
+```
+
+### Async/Await Patterns
+
+```typescript
+// Good: Proper async/await usage
+public async initializePlugins(): Promise<void> {
+  const plugins = await this.discoverPlugins();
+
+  // Use Promise.all for concurrent operations
+  await Promise.all(
+    plugins.map(plugin => this.loadPlugin(plugin.id))
+  );
+
+  // Sequential operations when order matters
+  for (const plugin of plugins) {
+    await this.initializePlugin(plugin);
+  }
+}
+
+// Avoid: Mixing promises and async/await
+public async initializePlugins(): Promise<void> {
+  this.discoverPlugins()
+    .then(plugins => {
+      return Promise.all(plugins.map(p => this.loadPlugin(p.id)));
+    })
+    .then(() => {
+      // More logic
+    });
+}
+```
+
 ### Imports and Exports
 
 ```typescript
@@ -151,10 +245,118 @@ import type { PluginConfig } from './types';
 import { validateManifest } from './validation';
 import { BasePlugin } from './base-plugin';
 
+// Group imports by source
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { z } from 'zod';
+
 // Avoid: Disorganized imports
 import { BasePlugin, validateManifest } from './base-plugin';
 import type { PluginConfig } from './types';
 ```
+
+### Comments and Documentation
+
+```typescript
+// Good: Comprehensive JSDoc
+/**
+ * Loads and initializes a plugin from the marketplace
+ * @param pluginId - Unique identifier of the plugin
+ * @param options - Installation options
+ * @returns Promise resolving to the installed plugin instance
+ * @throws {PluginLoadError} When plugin cannot be loaded
+ * @throws {ValidationError} When plugin manifest is invalid
+ * @throws {NetworkError} When marketplace is unreachable
+ * @example
+ * ```typescript
+ * const plugin = await pluginManager.installFromMarketplace('weather-widget', {
+ *   version: 'latest'
+ * });
+ * ```
+ */
+public async installFromMarketplace(
+  pluginId: string,
+  options: InstallOptions = {}
+): Promise<Plugin> {
+  // Implementation
+}
+
+// Good: Inline comments for complex logic
+public validateDependencies(deps: Dependency[]): ValidationResult {
+  const errors: string[] = [];
+
+  for (const dep of deps) {
+    // Check version compatibility
+    if (!this.isVersionCompatible(dep.version, dep.requiredVersion)) {
+      errors.push(`Incompatible version for ${dep.name}`);
+    }
+
+    // Verify dependency exists in registry
+    if (!this.dependencyRegistry.has(dep.name)) {
+      errors.push(`Unknown dependency: ${dep.name}`);
+    }
+  }
+
+  return { isValid: errors.length === 0, errors };
+}
+```
+
+### Code Formatting
+
+- Use 2 spaces for indentation (configured in Prettier)
+- Maximum line length: 100 characters
+- Use single quotes for strings
+- Use trailing commas in multi-line structures
+- Add spaces after commas and around operators
+- Use blank lines to separate logical sections
+
+```typescript
+// Good formatting
+export class PluginRegistry {
+  private plugins = new Map<string, Plugin>();
+
+  public register(plugin: Plugin): void {
+    this.plugins.set(plugin.id, plugin);
+  }
+
+  public get(id: string): Plugin | undefined {
+    return this.plugins.get(id);
+  }
+}
+
+// Avoid poor formatting
+export class PluginRegistry{private plugins=new Map<string,Plugin>();public register(plugin:Plugin):void{this.plugins.set(plugin.id,plugin);}public get(id:string):Plugin|undefined{return this.plugins.get(id);}}
+```
+
+### Best Practices
+
+#### Performance
+
+- Use `Map` and `Set` for frequent lookups instead of arrays
+- Implement lazy loading for heavy operations
+- Cache expensive computations when possible
+- Use `Promise.all()` for concurrent async operations
+
+#### Memory Management
+
+- Clean up event listeners and timers
+- Use weak references for caches when appropriate
+- Avoid memory leaks in long-running plugins
+
+#### Security
+
+- Validate all user inputs
+- Sanitize data before processing
+- Use parameterized queries for database operations
+- Implement proper authentication and authorization
+
+#### Maintainability
+
+- Keep functions small and focused (single responsibility)
+- Use meaningful variable and function names
+- Write self-documenting code
+- Add comprehensive error messages
+- Include usage examples in documentation
 
 ## 🧪 Testing
 
@@ -444,7 +646,7 @@ Users need to be able to browse and install plugins from the marketplace directl
 
 Contributors will be:
 
-- Listed in `CONTRIBUTORS.md`
+- Listed in [CONTRIBUTORS.md](CONTRIBUTORS.md)
 - Mentioned in release notes
 - Recognized in the project's Hall of Fame
 
