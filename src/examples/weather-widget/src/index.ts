@@ -1,4 +1,4 @@
-import { QirvoPlugin } from 'qirvo-plugin-sdk';
+import { BasePlugin, PluginRuntimeContext } from '@qirvo/plugin-sdk';
 import { WeatherSettings } from './components/WeatherSettings';
 import { WeatherWidget } from './components/WeatherWidget';
 
@@ -18,7 +18,7 @@ export interface WeatherData {
     timestamp: number;
 }
 
-class WeatherPlugin extends QirvoPlugin {
+class WeatherPlugin extends BasePlugin {
     private config: WeatherPluginConfig;
     private weatherData: WeatherData | null = null;
     private updateInterval: NodeJS.Timeout | null = null;
@@ -33,18 +33,19 @@ class WeatherPlugin extends QirvoPlugin {
         };
     }
 
-    async onInstall(): Promise<void> {
-        console.log('Weather plugin installed successfully');
+    async onInstall(context: PluginRuntimeContext): Promise<void> {
+        this.log('info', 'Weather plugin installed successfully');
         await this.loadConfig();
         await this.startWeatherUpdates();
     }
 
-    async onUninstall(): Promise<void> {
-        console.log('Weather plugin uninstalled');
+    async onUninstall(context: PluginRuntimeContext): Promise<void> {
+        this.log('info', 'Weather plugin uninstalled');
         this.stopWeatherUpdates();
     }
 
-    async onConfigUpdate(newConfig: Partial<WeatherPluginConfig>): Promise<void> {
+    async onConfigChange(context: PluginRuntimeContext, oldConfig: Record<string, any>): Promise<void> {
+        const newConfig = context.config as Partial<WeatherPluginConfig>;
         this.config = { ...this.config, ...newConfig };
         await this.saveConfig();
         await this.updateWeather();
@@ -64,20 +65,20 @@ class WeatherPlugin extends QirvoPlugin {
 
     private async loadConfig(): Promise<void> {
         try {
-            const savedConfig = localStorage.getItem('weather-plugin-config');
+            const savedConfig = await this.getStorage<WeatherPluginConfig>('weather-config');
             if (savedConfig) {
-                this.config = { ...this.config, ...JSON.parse(savedConfig) };
+                this.config = { ...this.config, ...savedConfig };
             }
         } catch (error) {
-            console.error('Failed to load weather plugin config:', error);
+            this.log('error', 'Failed to load weather plugin config:', error);
         }
     }
 
     private async saveConfig(): Promise<void> {
         try {
-            localStorage.setItem('weather-plugin-config', JSON.stringify(this.config));
+            await this.setStorage('weather-config', this.config);
         } catch (error) {
-            console.error('Failed to save weather plugin config:', error);
+            this.log('error', 'Failed to save weather plugin config:', error);
         }
     }
 
@@ -97,12 +98,12 @@ class WeatherPlugin extends QirvoPlugin {
 
     private async updateWeather(): Promise<void> {
         if (!this.config.apiKey) {
-            console.warn('Weather API key not configured');
+            this.log('warn', 'Weather API key not configured');
             return;
         }
 
         try {
-            const response = await fetch(
+            const response = await this.httpGet(
                 `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(this.config.location)}&appid=${this.config.apiKey}&units=${this.config.units}`
             );
 
@@ -121,10 +122,10 @@ class WeatherPlugin extends QirvoPlugin {
                 timestamp: Date.now()
             };
 
-            // Emit event for widget updates
-            this.emit('weather-updated', this.weatherData);
+            // Notify about weather updates
+            this.notify('Weather Updated', `Weather updated for ${this.weatherData.location}`, 'info');
         } catch (error) {
-            console.error('Failed to update weather:', error);
+            this.log('error', 'Failed to update weather:', error);
             this.weatherData = null;
         }
     }
@@ -132,7 +133,4 @@ class WeatherPlugin extends QirvoPlugin {
 
 // Export the plugin instance
 export const weatherPlugin = new WeatherPlugin();
-
-// Export types for external use
-export type { WeatherData, WeatherPluginConfig };
 

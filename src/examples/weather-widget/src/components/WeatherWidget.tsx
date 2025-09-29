@@ -55,9 +55,9 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({
     if (isLoading || !currentWeather) {
         return (
             <Card shadow="sm" padding="lg" radius="md" withBorder>
-                <Group position="center">
+                <Group justify="center">
                     <Loader size="sm" />
-                    <Text size="sm" color="dimmed">Loading weather...</Text>
+                    <Text size="sm" c="dimmed">Loading weather...</Text>
                 </Group>
             </Card>
         );
@@ -65,32 +65,32 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <Group position="apart" mb="xs">
-                <Text weight={500} size="lg">
+            <Group justify="apart" mb="xs">
+                <Text fw={500} size="lg">
                     {currentWeather.location}
                 </Text>
                 {getWeatherIcon(currentWeather.condition)}
             </Group>
 
-            <Group position="apart" mb="md">
+            <Group justify="apart" mb="md">
                 <div>
-                    <Text size="xl" weight={700}>
+                    <Text size="xl" fw={700}>
                         {formatTemperature(currentWeather.temperature)}
                     </Text>
-                    <Text size="sm" color="dimmed" transform="capitalize">
+                    <Text size="sm" c="dimmed" tt="capitalize">
                         {currentWeather.condition}
                     </Text>
                 </div>
             </Group>
 
-            <Group spacing="xl">
+            <Group gap="xl">
                 <div>
-                    <Text size="sm" color="dimmed">Humidity</Text>
-                    <Text weight={500}>{currentWeather.humidity}%</Text>
+                    <Text size="sm" c="dimmed">Humidity</Text>
+                    <Text fw={500}>{currentWeather.humidity}%</Text>
                 </div>
                 <div>
-                    <Text size="sm" color="dimmed">Wind</Text>
-                    <Text weight={500}>{currentWeather.windSpeed} m/s</Text>
+                    <Text size="sm" c="dimmed">Wind</Text>
+                    <Text fw={500}>{currentWeather.windSpeed} m/s</Text>
                 </div>
             </Group>
 

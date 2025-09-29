@@ -73,12 +73,12 @@ export const WeatherSettings: React.FC<WeatherSettingsProps> = ({
         <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Group mb="md">
                 <IconSettings size={24} />
-                <Text size="lg" weight={500}>
+                <Text size="lg" fw={500}>
                     Weather Plugin Settings
                 </Text>
             </Group>
 
-            <Stack spacing="md">
+            <Stack gap="md">
                 <TextInput
                     label="OpenWeatherMap API Key"
                     placeholder="Enter your API key from openweathermap.org"
@@ -130,12 +130,12 @@ export const WeatherSettings: React.FC<WeatherSettingsProps> = ({
                     </Alert>
                 )}
 
-                <Group position="right" mt="md">
+                <Group p="right" mt="md">
                     <Button
                         onClick={handleSave}
                         loading={isSaving}
                         disabled={!formData.apiKey || !formData.location}
-                        leftIcon={saveSuccess ? <IconCheck size={16} /> : undefined}
+                        leftSection={saveSuccess ? <IconCheck size={16} /> : undefined}
                     >
                         {saveSuccess ? 'Saved!' : 'Save Settings'}
                     </Button>

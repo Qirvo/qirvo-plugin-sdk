@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
         "target": "ES2020",
-        "module": "commonjs",
+        "module": "ES2020",
+        "moduleResolution": "node",
+        "jsx": "react-jsx",
         "lib": [
             "ES2020",
             "DOM"
@@ -18,7 +20,6 @@
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "jsx": "react-jsx",
         "types": [
             "node",
             "react",

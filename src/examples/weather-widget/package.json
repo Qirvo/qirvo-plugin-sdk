@@ -1,7 +1,7 @@
 {
-    "name": "qirvo-weather-widget",
+    "name": "qirvo-weather-plugin",
     "version": "1.0.0",
-    "description": "Weather widget plugin for Qirvo dashboard",
+    "description": "Weather plugin for Qirvo dashboard",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
@@ -17,12 +17,13 @@
         "plugin",
         "weather",
         "widget",
+        "plugins",
         "dashboard"
     ],
     "author": "Qirvo Team",
     "license": "MIT",
     "dependencies": {
-        "qirvo-plugin-sdk": "^2.0.0",
+        "@qirvo/plugin-sdk": "^2.0.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "@mantine/core": "^7.0.0",
